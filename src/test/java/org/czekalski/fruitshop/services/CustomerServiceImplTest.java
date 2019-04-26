@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class CustomerServiceImplTest {
@@ -60,7 +61,26 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    public void addCustomer() {
+    public void createNewCustomer() {
+        Customer savedCustomer=new Customer();
+        savedCustomer.setLastName("Black");
+        savedCustomer.setFirstName("Joe");
+        savedCustomer.setId(1L);
+
+
+        CustomerDTO customerDTO=new CustomerDTO();
+        customerDTO.setLastName("Black");
+        customerDTO.setFirstName("Joe");
+
+        when(customerRepository.save(any(Customer.class))).thenReturn(savedCustomer);
+
+
+        CustomerDTO returnedCustomerDTO=customerService.createNewCustomer(customerDTO);
+
+
+        assertEquals("Joe",returnedCustomerDTO.getFirstName());
+        assertEquals("Black",returnedCustomerDTO.getLastName());
+Assert.assertEquals("/api/v1/customers/1",returnedCustomerDTO.getCustomerUrl());
     }
 
     @Test
