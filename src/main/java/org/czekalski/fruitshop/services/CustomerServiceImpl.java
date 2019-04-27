@@ -1,6 +1,6 @@
 package org.czekalski.fruitshop.services;
 
-import org.czekalski.fruitshop.api.v1.mapper.CategoryMapper;
+
 import org.czekalski.fruitshop.api.v1.mapper.CustomerMapper;
 import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
 import org.czekalski.fruitshop.domain.Customer;
@@ -73,7 +73,28 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void deleteCustomer(CustomerDTO customerDTO) {
+    public CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO) {
+        return customerRepository.findById(id).map(customer -> {
 
+            if(customerDTO.getFirstName()!=null)
+            customer.setFirstName(customerDTO.getFirstName());
+
+            if(customerDTO.getLastName()!=null)
+                customer.setLastName(customerDTO.getLastName());
+
+            CustomerDTO returnedDto=customerMapper.customerToCustomerDTO(customerRepository.save(customer));
+            if(customerDTO.getCustomerUrl()!=null)
+                returnedDto.setCustomerUrl(customerDTO.getCustomerUrl());
+            else returnedDto.setCustomerUrl( "/api/v1/customers/"+customer.getId());
+
+            return returnedDto;
+        }).orElseThrow(RuntimeException::new);
     }
+
+    @Override
+    public void deleteCustomerById(Long id) {
+customerRepository.deleteById(id);
+    }
+
+
 }
