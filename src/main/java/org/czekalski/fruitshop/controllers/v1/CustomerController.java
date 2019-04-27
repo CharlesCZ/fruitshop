@@ -59,8 +59,10 @@ private final CustomerService customerService;
 
 
     @DeleteMapping("/{id}")
-    public void deleteCustomer(@PathVariable Long id){
+    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id){
 
         customerService.deleteCustomerById(id);
+
+        return  new ResponseEntity<>(HttpStatus.OK);
     }
 }
