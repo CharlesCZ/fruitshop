@@ -3,6 +3,7 @@ package org.czekalski.fruitshop.services;
 
 import org.czekalski.fruitshop.api.v1.mapper.CustomerMapper;
 import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+import org.czekalski.fruitshop.controllers.v1.CustomerController;
 import org.czekalski.fruitshop.domain.Customer;
 import org.czekalski.fruitshop.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,14 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll().stream()
                 .map(customer -> {
                     CustomerDTO customerDTO=customerMapper.customerToCustomerDTO(customer);
-                    customerDTO.setCustomerUrl("/api/v1/customers/"+customer.getId());
+                    customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private String getCustomerUrl(Long id) {
+        return CustomerController.BASE_URL +"/"+ id;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         CustomerDTO customerDTO=customerMapper
                 .customerToCustomerDTO(customer);
-        customerDTO.setCustomerUrl("/api/v1/customers/"+customer.getId());
+        customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
         return customerDTO;
 
     }
@@ -60,7 +65,7 @@ public class CustomerServiceImpl implements CustomerService {
 
         CustomerDTO returnDto=customerMapper.customerToCustomerDTO(savedCustomer);
 
-        returnDto.setCustomerUrl("/api/v1/customers/" + savedCustomer.getId());
+        returnDto.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
         return returnDto;
     }
 
@@ -85,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService {
             CustomerDTO returnedDto=customerMapper.customerToCustomerDTO(customerRepository.save(customer));
             if(customerDTO.getCustomerUrl()!=null)
                 returnedDto.setCustomerUrl(customerDTO.getCustomerUrl());
-            else returnedDto.setCustomerUrl( "/api/v1/customers/"+customer.getId());
+            else returnedDto.setCustomerUrl(getCustomerUrl(customer.getId()));
 
             return returnedDto;
         }).orElseThrow(RuntimeException::new);
