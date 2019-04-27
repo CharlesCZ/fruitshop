@@ -1,7 +1,9 @@
 package org.czekalski.fruitshop.controllers.v1;
 
+import org.czekalski.fruitshop.api.RestResponseEntityExceptionHandler;
 import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
 import org.czekalski.fruitshop.services.CustomerService;
+import org.czekalski.fruitshop.services.ResourceNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,7 +41,7 @@ public class CustomerControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc= MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc= MockMvcBuilders.standaloneSetup(customerController).setControllerAdvice(new RestResponseEntityExceptionHandler()).build();
     }
 
     @Test
@@ -163,5 +165,18 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
                 .andExpect(status().isOk());
 
         verify(customerService,times(1)).deleteCustomerById(anyLong());
+    }
+
+
+    @Test
+    public void testNotFoundException() throws Exception {
+
+        when(customerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CustomerController.BASE_URL+"/221")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        //verify(customerService,times(1)).deleteCustomerById(anyLong());
     }
 }

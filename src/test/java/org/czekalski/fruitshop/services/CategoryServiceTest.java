@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -56,7 +57,7 @@ public class CategoryServiceTest {
         namedCategory.setId(ID);
         namedCategory.setName(NAME);
 
-        when(categoryRepository.findByName(NAME)).thenReturn(namedCategory);
+        when(categoryRepository.findByName(NAME)).thenReturn(Optional.of(namedCategory));
 
 //when
         CategoryDTO returnedCategory=categoryService.getCategoryByName(NAME);

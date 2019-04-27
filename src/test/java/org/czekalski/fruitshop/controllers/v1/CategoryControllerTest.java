@@ -1,7 +1,9 @@
 package org.czekalski.fruitshop.controllers.v1;
 
+import org.czekalski.fruitshop.api.RestResponseEntityExceptionHandler;
 import org.czekalski.fruitshop.api.v1.model.CategoryDTO;
 import org.czekalski.fruitshop.services.CategoryService;
+import org.czekalski.fruitshop.services.ResourceNotFoundException;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,7 +44,8 @@ public class CategoryControllerTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        mockMvc= MockMvcBuilders.standaloneSetup(categoryController).build();
+        mockMvc= MockMvcBuilders.standaloneSetup(categoryController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler()).build();
     }
 
     @Test
@@ -78,6 +81,15 @@ public class CategoryControllerTest {
         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name",equalTo(NAME)));
+    }
+
+    @Test
+    public void testNotFoundNameCategory() throws Exception {
+        when(categoryService.getCategoryByName(anyString())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(CategoryController.BASE_URL+"dasdas")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 
