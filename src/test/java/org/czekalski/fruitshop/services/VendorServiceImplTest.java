@@ -10,11 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,9 +80,12 @@ public class VendorServiceImplTest {
     @Test
     public void deleteVendorById() {
 
+
+        //when
         vendorService.deleteVendorById(1L);
 
-        verify(vendorRepository,times(1)).deleteById(anyLong());
+        //then
+        then(vendorRepository).should().deleteById(anyLong());
     }
 
     @Test
@@ -105,9 +111,17 @@ public class VendorServiceImplTest {
         assertEquals("/api/v1/vendors/1",returnedDto.getVendorUrl());
     }
 
-    @Test
+    @Test(expected = ResourceNotFoundException.class)
     public void getVendorByIdNotFound(){
+        //given
+        //mockito BBD syntax since mockito 1.10.0
+        given(vendorRepository.findById(anyLong())).willReturn(Optional.empty());
 
+        //when
+        VendorDTO vendorDTO=vendorService.getVendorById(1L);
+
+        //then
+        then(vendorRepository).should(times(1)).findById(anyLong());
 
 
     }
@@ -132,4 +146,30 @@ public class VendorServiceImplTest {
         assertEquals("/api/v1/vendors/1",returnedDto.getVendorUrl());
 
     }
+
+
+    @Test
+    public void patchVendor() throws Exception {
+        //given
+        VendorDTO vendorDTO=new VendorDTO();
+        vendorDTO.setName(NAME);
+
+        Vendor vendor=new Vendor();
+        vendor.setName(NAME);
+        vendor.setId(1L);
+
+        given(vendorRepository.findById(anyLong())).willReturn(Optional.of(vendor));
+        given(vendorRepository.save(any(Vendor.class))).willReturn(vendor);
+
+        VendorDTO returnedDto=vendorService.patchVendor(1L,vendorDTO);
+
+        //then
+        // 'should' defaults to times = 1
+        then(vendorRepository).should().findById(anyLong());
+        then(vendorRepository).should(times(1)).save(any(Vendor.class));
+        assertThat(returnedDto.getVendorUrl(),containsString("1"));
+
+    }
+
+
 }

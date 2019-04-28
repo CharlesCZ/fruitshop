@@ -25,6 +25,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+
 public class VendorControllerTest {
 
     @Mock
@@ -123,7 +125,7 @@ public class VendorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(vendorDTO)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name",equalTo("Pan samochodzik")))
+                .andExpect(jsonPath("$.name",equalTo(returnedDto.getName())))
                 .andExpect(jsonPath("$.vendor_url",equalTo(VendorController.BASE_URL+"/1")));
 
     }
