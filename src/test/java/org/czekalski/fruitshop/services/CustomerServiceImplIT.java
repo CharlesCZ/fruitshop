@@ -7,6 +7,7 @@ import org.czekalski.fruitshop.bootstrap.Bootstrap;
 import org.czekalski.fruitshop.domain.Customer;
 import org.czekalski.fruitshop.repositories.CategoryRepository;
 import org.czekalski.fruitshop.repositories.CustomerRepository;
+import org.czekalski.fruitshop.repositories.VendorRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,6 +30,9 @@ public class CustomerServiceImplIT {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerService customerService;
 
     @Before
@@ -37,7 +41,7 @@ public class CustomerServiceImplIT {
         System.out.println(customerRepository.findAll().size());
 
         //setup data for testing
-        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository, customerRepository, vendorRepository);
         bootstrap.run(); //load data
 
         customerService = new CustomerServiceImpl(CustomerMapper.INSTANCE, customerRepository);
