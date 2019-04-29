@@ -5,6 +5,7 @@ import org.czekalski.fruitshop.api.v1.model.CategoryDTO;
 import org.czekalski.fruitshop.api.v1.model.CategoryListDTO;
 import org.czekalski.fruitshop.services.CategoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -19,7 +20,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public CategoryListDTO getAllCategories(){
         return new CategoryListDTO(categoryService.getAllCategories());

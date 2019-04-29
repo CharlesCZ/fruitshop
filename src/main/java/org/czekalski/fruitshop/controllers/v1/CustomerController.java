@@ -1,5 +1,7 @@
 package org.czekalski.fruitshop.controllers.v1;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.czekalski.fruitshop.api.v1.model.CategoryListDTO;
 import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
 import org.czekalski.fruitshop.api.v1.model.CustomerListDTO;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Api(description = "This is my Customer Controller")
 @Controller
 @RequestMapping(CustomerController.BASE_URL)
 public class CustomerController {
@@ -22,6 +25,7 @@ public class CustomerController {
     }
 
 
+    @ApiOperation(value = "This will get a list of customers.", notes = "This are some notes about the API")
 @GetMapping
     public ResponseEntity<CustomerListDTO> getAllCustomers(){
 
