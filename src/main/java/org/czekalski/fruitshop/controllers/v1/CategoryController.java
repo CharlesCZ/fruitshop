@@ -1,6 +1,7 @@
 package org.czekalski.fruitshop.controllers.v1;
 
 
+import io.swagger.annotations.ApiOperation;
 import org.czekalski.fruitshop.api.v1.model.CategoryDTO;
 import org.czekalski.fruitshop.api.v1.model.CategoryListDTO;
 import org.czekalski.fruitshop.services.CategoryService;
@@ -20,7 +21,8 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value ="get list of All categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CategoryListDTO getAllCategories(){
         return new CategoryListDTO(categoryService.getAllCategories());
