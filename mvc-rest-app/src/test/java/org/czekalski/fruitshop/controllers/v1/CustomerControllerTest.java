@@ -1,9 +1,10 @@
 package org.czekalski.fruitshop.controllers.v1;
 
 import org.czekalski.fruitshop.api.RestResponseEntityExceptionHandler;
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+
 import org.czekalski.fruitshop.services.CustomerService;
 import org.czekalski.fruitshop.services.ResourceNotFoundException;
+import org.czekalski.model.CustomerDTO;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -96,7 +97,7 @@ retunedCustomer.setFirstName(customerDTO1.getFirstName());
 retunedCustomer.setLastName(customerDTO1.getLastName());
 retunedCustomer.setCustomerUrl(CustomerController.BASE_URL+"/1");
 
-when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer);
+when(customerService.createNewCustomer(any())).thenReturn(retunedCustomer);
 
         //when/then
         mockMvc.perform(post("/api/v1/customers/")
@@ -104,8 +105,8 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(customerDTO1)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.firstName", equalTo("Andrzej")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL+"/1")));
+                 .andExpect(jsonPath("$.firstName", equalTo("Andrzej")))
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASE_URL+"/1")));
     }
 
 
@@ -121,7 +122,7 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
         returnDTO.setLastName(customer.getLastName());
         returnDTO.setCustomerUrl(CustomerController.BASE_URL+"/1");
 
-        when(customerService.saveCustomerByDTO(anyLong(), any(CustomerDTO.class))).thenReturn(returnDTO);
+        when(customerService.saveCustomerByDTO(anyLong(), any())).thenReturn(returnDTO);
 
         //when/then
         mockMvc.perform(put(CustomerController.BASE_URL+"/1")
@@ -131,7 +132,7 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo("Fred")))
                 .andExpect(jsonPath("$.lastName", equalTo("Flintstone")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL+"/1")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASE_URL+"/1")));
     }
 
 
@@ -146,7 +147,7 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
         returnDTO.setLastName("Flintstone");
         returnDTO.setCustomerUrl(CustomerController.BASE_URL+"/1");
 
-        when(customerService.patchCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(returnDTO);
+        when(customerService.patchCustomer(anyLong(),any())).thenReturn(returnDTO);
 
         //when/then
         mockMvc.perform(patch(CustomerController.BASE_URL+"/1")
@@ -156,7 +157,7 @@ when(customerService.createNewCustomer(customerDTO1)).thenReturn(retunedCustomer
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName",equalTo("Fred")))
                 .andExpect(jsonPath("$.lastName",equalTo("Flintstone")))
-                .andExpect(jsonPath("$.customer_url", equalTo(CustomerController.BASE_URL+"/1")));
+                .andExpect(jsonPath("$.customerUrl", equalTo(CustomerController.BASE_URL+"/1")));
 
 
     }

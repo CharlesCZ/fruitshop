@@ -1,7 +1,8 @@
 package org.czekalski.fruitshop.api.v1.mapper;
 
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+
 import org.czekalski.fruitshop.domain.Customer;
+import org.czekalski.model.CustomerDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

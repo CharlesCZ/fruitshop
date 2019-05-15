@@ -2,10 +2,12 @@ package org.czekalski.fruitshop.controllers.v1;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.czekalski.fruitshop.api.v1.model.CategoryListDTO;
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
-import org.czekalski.fruitshop.api.v1.model.CustomerListDTO;
+
+
+
 import org.czekalski.fruitshop.services.CustomerService;
+import org.czekalski.model.CustomerDTO;
+import org.czekalski.model.CustomerListDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,9 +30,11 @@ public class CustomerController {
     @ApiOperation(value = "This will get a list of customers.", notes = "This are some notes about the API")
 @GetMapping
     public ResponseEntity<CustomerListDTO> getAllCustomers(){
+            CustomerListDTO customerListDTO=new CustomerListDTO();
+            customerListDTO.getCustomers().addAll(customerService.getAllCustomers());
 
         return new ResponseEntity<>(
-                new CustomerListDTO(customerService.getAllCustomers()), HttpStatus.OK);
+              customerListDTO, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -41,7 +45,7 @@ public class CustomerController {
     }
 
 @PostMapping
-    public ResponseEntity<CustomerDTO> saveNewCustomer(@RequestBody CustomerDTO customerDTO){
+    public ResponseEntity<CustomerDTO> createNewCustomer(@RequestBody CustomerDTO customerDTO){
 
         return new ResponseEntity<>(
                 customerService.createNewCustomer(customerDTO),HttpStatus.CREATED);

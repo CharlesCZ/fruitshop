@@ -2,10 +2,11 @@ package org.czekalski.fruitshop.services;
 
 
 import org.czekalski.fruitshop.api.v1.mapper.CustomerMapper;
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+
 import org.czekalski.fruitshop.controllers.v1.CustomerController;
 import org.czekalski.fruitshop.domain.Customer;
 import org.czekalski.fruitshop.repositories.CustomerRepository;
+import org.czekalski.model.CustomerDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

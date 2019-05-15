@@ -1,6 +1,10 @@
 package org.czekalski.fruitshop.services;
 
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+
+
+
+
+import org.czekalski.model.CustomerDTO;
 
 import java.util.List;
 

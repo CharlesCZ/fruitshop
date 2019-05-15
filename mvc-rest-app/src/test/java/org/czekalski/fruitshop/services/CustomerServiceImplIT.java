@@ -2,12 +2,13 @@ package org.czekalski.fruitshop.services;
 
 
 import org.czekalski.fruitshop.api.v1.mapper.CustomerMapper;
-import org.czekalski.fruitshop.api.v1.model.CustomerDTO;
+
 import org.czekalski.fruitshop.bootstrap.Bootstrap;
 import org.czekalski.fruitshop.domain.Customer;
 import org.czekalski.fruitshop.repositories.CategoryRepository;
 import org.czekalski.fruitshop.repositories.CustomerRepository;
 import org.czekalski.fruitshop.repositories.VendorRepository;
+import org.czekalski.model.CustomerDTO;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
